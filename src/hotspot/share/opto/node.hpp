@@ -410,6 +410,8 @@ protected:
     debug_only(_out[_outcnt] = (Node *)(uintptr_t)0xdeadbeef);
   }
 
+  void set_removed(){ _removed = true; }
+  bool get_removed(){ return _removed; }
 #ifdef ASSERT
   bool is_dead() const;
 #define is_not_dead(n) ((n) == NULL || !VerifyIterativeGVN || !((n)->is_dead()))
@@ -787,6 +789,7 @@ private:
   juint _class_id;
   juint _flags;
 
+  bool _removed = false;
   static juint max_flags();
 
 protected:
