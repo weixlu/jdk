@@ -228,6 +228,13 @@ void DefNewGeneration::compute_space_boundaries(uintx minimum_eden_size,
   uintx size = _virtual_space.committed_size();
   uintx survivor_size = compute_survivor_size(size, SpaceAlignment);
   uintx eden_size = size - (2*survivor_size);
+
+  if (eden_size > _max_eden_size) {
+    uintx minimum_survivor_size = (size - _max_eden_size) / 2;
+    survivor_size = align_up(minimum_survivor_size, SpaceAlignment);
+    eden_size = size - (2*survivor_size);
+  }
+
   assert(eden_size > 0 && survivor_size <= eden_size, "just checking");
 
   if (eden_size < minimum_eden_size) {
